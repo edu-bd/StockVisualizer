@@ -1,0 +1,31 @@
+/* StrategyBuilder.css */
+
+.strategy-builder {
+  margin-bottom: 24px;
+}
+
+.condition-logic-selector {
+  margin-bottom: 16px;
+}
+
+.conditions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.condition-card {
+  width: 300px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.condition-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-condition-button {
+  margin-top: 8px;
+}

@@ -16,6 +16,7 @@ import StockPage from './pages/StockPage';
 import IndexPage from './pages/IndexPage';
 import DetailPage from './pages/DetailPage';
 import StockKlineDemo from './pages/StockKlineDemo';
+import StrategyPage from './pages/StrategyPage';
 
 // 导入布局组件
 import Header from './components/Header';
@@ -41,6 +42,7 @@ function App() {
           <Route path="/indices" element={<IndexPage />} />
           <Route path="/detail/:type/:symbol" element={<DetailPage />} />
           <Route path="/stock-kline-demo" element={<StockKlineDemo />} />
+          <Route path="/strategy" element={<StrategyPage />} />
         </Routes>
       </Content>
       <Footer />

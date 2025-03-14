@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { HomeOutlined, LineChartOutlined, FundOutlined } from '@ant-design/icons';
+import { HomeOutlined, LineChartOutlined, FundOutlined, FilterOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 
 const { Header: AntHeader } = Layout;
@@ -25,6 +25,7 @@ const Header = () => {
   const getSelectedKey = () => {
     if (currentPath.startsWith('/stocks')) return '2';
     if (currentPath.startsWith('/indices')) return '3';
+    if (currentPath.startsWith('/strategy')) return '4';
     return '1';
   };
 
@@ -52,6 +53,11 @@ const Header = () => {
             key: '3',
             icon: <FundOutlined />,
             label: <Link to="/indices">指数列表</Link>,
+          },
+          {
+            key: '4',
+            icon: <FilterOutlined />,
+            label: <Link to="/strategy">选股策略</Link>,
           },
         ]}
       />
