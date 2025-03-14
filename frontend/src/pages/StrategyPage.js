@@ -51,25 +51,26 @@ const StrategyPage = () => {
 
   return (
     <Layout className="strategy-page">
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <Content style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
         <Typography>
-          <Title level={2}>选股策略</Title>
-          <Paragraph>
+          <Title level={2} style={{ marginBottom: '8px' }}>选股策略</Title>
+          <Paragraph style={{ marginBottom: '12px' }}>
             通过设置各种技术指标和基本面指标的条件，筛选符合条件的股票或指数。
             您可以创建复杂的选股策略，并查看符合条件的结果。
           </Paragraph>
         </Typography>
         
-        <Divider />
+        <Divider style={{ margin: '12px 0' }} />
         
         <Tabs 
           activeKey={activeTab} 
           onChange={setActiveTab}
           type="card"
-          tabBarStyle={{ marginBottom: 24 }}
+          tabBarStyle={{ marginBottom: '16px' }}
+          size="small"
         >
           <TabPane tab="股票策略" key="stock">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <StrategyBuilder 
                 onExecute={(strategy) => handleExecuteStrategy(strategy, 'stock')} 
                 targetType="stock" 
@@ -84,7 +85,7 @@ const StrategyPage = () => {
           </TabPane>
           
           <TabPane tab="指数策略" key="index">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <StrategyBuilder 
                 onExecute={(strategy) => handleExecuteStrategy(strategy, 'index')} 
                 targetType="index" 

@@ -1,24 +1,24 @@
 /* StrategyBuilder.css */
 
 .strategy-builder {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .condition-logic-selector {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .conditions-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .condition-card {
-  width: 300px;
-  margin-bottom: 16px;
-  border-radius: 8px;
+  width: 280px;
+  margin-bottom: 12px;
+  border-radius: 6px;
   transition: all 0.3s;
 }
 
@@ -27,5 +27,5 @@
 }
 
 .add-condition-button {
-  margin-top: 8px;
+  margin-top: 6px;
 }

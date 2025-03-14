@@ -224,11 +224,11 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
   };
 
   return (
-    <Card className="strategy-builder">
-      <Title level={4}>构建选股策略</Title>
+    <Card className="strategy-builder" size="small">
+      <Title level={4} style={{ marginBottom: '8px' }}>构建选股策略</Title>
       <Text type="secondary">创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
       
-      {error && <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />}
+      {error && <Alert message={error} type="error" showIcon style={{ marginTop: 12 }} />}
       
       <Form
         form={form}
@@ -238,7 +238,13 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           logic: 'AND',
           sort_order: 'desc',
           market: 'all',
-          conditions: [{}]
+          conditions: [{
+            indicator_type: 'price',
+            indicator: 'close',
+            operator: '>',
+            value: 50,
+            time_frame: 'daily'
+          }]
         }}
         style={{ marginTop: 16 }}
       >
@@ -276,9 +282,9 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           </Col>
         </Row>
         
-        <Divider orientation="left">条件设置</Divider>
+        <Divider orientation="left" style={{ margin: '10px 0' }}>条件设置</Divider>
         
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 12 }}>
           <Tooltip title="AND: 所有条件都必须满足; OR: 满足任一条件即可">
             <span>条件逻辑关系 <QuestionCircleOutlined /></span>
           </Tooltip>

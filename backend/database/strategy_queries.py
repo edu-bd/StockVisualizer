@@ -57,13 +57,18 @@ def execute_stock_strategy(db: Session, strategy: StrategyModel) -> Dict[str, An
     if where_clauses:
         logic_operator = " AND " if strategy.logic == "AND" else " OR "
         # 市场筛选条件始终使用AND连接，不受logic影响
-        if strategy.market and strategy.market != 'all' and len(where_clauses) > 1:
-            market_condition = where_clauses[0]
-            other_conditions = where_clauses[1:]
-            combined_other_conditions = logic_operator.join(f"({clause})" for clause in other_conditions)
-            base_query += f" WHERE {market_condition} AND ({combined_other_conditions})"
+        if strategy.market and strategy.market != 'all':
+            market_condition = where_clauses.pop(0)  # 提取市场条件
+            if where_clauses:
+                logic_operator = " AND " if strategy.logic == "AND" else " OR "
+                combined_conditions = logic_operator.join(f"({clause})" for clause in where_clauses)
+                base_query += f" WHERE ({market_condition}) AND ({combined_conditions})"
+            else:
+                base_query += f" WHERE ({market_condition})"
         else:
-            base_query += " WHERE " + logic_operator.join(f"({clause})" for clause in where_clauses)
+            if where_clauses:
+                logic_operator = " AND " if strategy.logic == "AND" else " OR "
+                base_query += " WHERE " + logic_operator.join(f"({clause})" for clause in where_clauses)
     
     # 添加排序
     if strategy.sort_by:
