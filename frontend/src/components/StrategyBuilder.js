@@ -230,16 +230,38 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
           <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
         </div>
-        <Button 
-          type="primary"
-          icon={<PlayCircleOutlined />}
-          onClick={() => form.submit()}
-          loading={loading}
-          style={{ borderRadius: '4px' }}
-          size="middle"
-        >
-          执行策略
-        </Button>
+        <div>
+          <Button 
+            icon={<SaveOutlined />} 
+            onClick={handleSaveStrategy}
+            title="保存策略"
+            size="small"
+            type="default"
+            style={{ borderRadius: '4px', marginRight: '8px' }}
+          >
+            保存
+          </Button>
+          <Button 
+            icon={<UploadOutlined />} 
+            onClick={handleImportStrategy}
+            title="导入策略"
+            size="small"
+            type="default"
+            style={{ borderRadius: '4px', marginRight: '8px' }}
+          >
+            导入
+          </Button>
+          <Button 
+            type="primary"
+            icon={<PlayCircleOutlined />}
+            onClick={() => form.submit()}
+            loading={loading}
+            style={{ borderRadius: '4px' }}
+            size="middle"
+          >
+            执行策略
+          </Button>
+        </div>
       </div>
       
       {error && <Alert message={error} type="error" showIcon style={{ marginTop: 8, marginBottom: 8 }} />}
@@ -265,21 +287,13 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
         size="small"
       >
         <Row gutter={8}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="name"
               label="策略名称"
               rules={[{ required: true, message: '请输入策略名称' }]}
             >
               <Input placeholder="输入策略名称" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="market"
-              label="市场选择"
-            >
-              <Select placeholder="选择市场" options={marketOptions} />
             </Form.Item>
           </Col>
         </Row>
@@ -303,30 +317,8 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           </Col>
         </Row>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px', flex: 1 }}>条件设置</Divider>
-          <Space>
-            <Button 
-              icon={<SaveOutlined />} 
-              onClick={handleSaveStrategy}
-              title="保存策略"
-              size="small"
-              type="default"
-              style={{ borderRadius: '4px' }}
-            >
-              保存
-            </Button>
-            <Button 
-              icon={<UploadOutlined />} 
-              onClick={handleImportStrategy}
-              title="导入策略"
-              size="small"
-              type="default"
-              style={{ borderRadius: '4px' }}
-            >
-              导入
-            </Button>
-          </Space>
+        <div style={{ marginBottom: '8px' }}>
+          <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px' }}>条件设置</Divider>
         </div>
         
         <div style={{ marginBottom: 8 }}>

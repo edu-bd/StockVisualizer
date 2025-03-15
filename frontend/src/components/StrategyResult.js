@@ -24,32 +24,16 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
   const [pageSize, setPageSize] = useState(10);
   const [marketFilter, setMarketFilter] = useState('all');
   
-  // 如果没有结果，则不显示
-  if (!result) return null;
-
   // 市场选项
   const marketOptions = [
-    { value: 'all', label: '全部市场' },
-    { value: 'sh', label: '上海' },
+    { value: 'all', label: '全部' },
     { value: 'sz', label: '深圳' },
+    { value: 'sh', label: '上海' },
     { value: 'bj', label: '北京' }
   ];
-
-  // 根据市场筛选数据
-  const filteredItems = marketFilter === 'all' 
-    ? result.items 
-    : result.items.filter(item => {
-        const symbol = item.symbol;
-        // 直接检查股票代码前缀
-        if (marketFilter === 'sh') {
-          return symbol.startsWith('sh');
-        } else if (marketFilter === 'sz') {
-          return symbol.startsWith('sz');
-        } else if (marketFilter === 'bj') {
-          return symbol.startsWith('bj');
-        }
-        return true;
-      });
+  
+  // 如果没有结果，则不显示
+  if (!result) return null;
 
   // 定义表格列
   const columns = [
@@ -116,11 +100,11 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
   const handleExportResult = () => {
     try {
       // 提取股票代码并去除市场前缀
-      const stockCodes = filteredItems.map(item => {
+      const stockCodes = result.items.map(item => {
         // 去除市场前缀（如sh、sz、bj等）
         const symbol = item.symbol;
-        // 使用正则表达式匹配非数字前缀
-        const match = symbol.match(/[^0-9]*(\d+)/);
+        // 使用正则表达式匹配数字部分
+        const match = symbol.match(/[^0-9]*([0-9]+)/);
         return match ? match[1] : symbol;
       });
       
@@ -163,14 +147,16 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
       </div>
       
       <Row gutter={16} style={{ marginBottom: 16 }}>
-        <Col span={6}>
+        <Col span={12}>
           <Statistic 
             title="匹配数量" 
-            value={filteredItems.length} 
+            value={marketFilter === 'all' 
+              ? result.items.length 
+              : result.items.filter(item => item.symbol.toLowerCase().startsWith(marketFilter)).length} 
             suffix={targetType === 'stock' ? '只股票' : '个指数'} 
           />
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Statistic 
             title="执行时间" 
             value={result.execution_time.toFixed(3)} 
@@ -178,6 +164,28 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
             prefix={<ClockCircleOutlined />} 
           />
         </Col>
+      </Row>
+      
+      <Row gutter={16} style={{ marginBottom: 16 }}>
+        <Col span={24}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ marginBottom: 4 }}>每页显示：</span>
+            <Select
+              value={pageSize}
+              onChange={setPageSize}
+              options={[
+                { value: 10, label: '10条/页' },
+                { value: 20, label: '20条/页' },
+                { value: 50, label: '50条/页' },
+                { value: 100, label: '100条/页' },
+              ]}
+              style={{ width: '200px' }}
+            />
+          </div>
+        </Col>
+      </Row>
+      
+      <Row gutter={16} style={{ marginBottom: 16 }}>
         <Col span={6}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ marginBottom: 4 }}>市场筛选：</span>
@@ -208,16 +216,26 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
         </Col>
       </Row>
       
-      <Table 
-        columns={columns} 
-        dataSource={filteredItems.map((item, index) => ({ ...item, key: index }))} 
-        pagination={{ 
-          pageSize: pageSize,
-          showSizeChanger: false
-        }}
-        size="middle"
-        bordered
-      />
+      {/* 根据市场筛选过滤结果 */}
+      {(() => {
+        // 根据市场筛选过滤结果
+        const filteredItems = marketFilter === 'all' 
+          ? result.items 
+          : result.items.filter(item => item.symbol.toLowerCase().startsWith(marketFilter));
+          
+        return (
+          <Table 
+            columns={columns} 
+            dataSource={filteredItems.map((item, index) => ({ ...item, key: index }))} 
+            pagination={{ 
+              pageSize: pageSize,
+              showSizeChanger: false
+            }}
+            size="middle"
+            bordered
+          />
+        );
+      })()}
     </Card>
   );
 };
