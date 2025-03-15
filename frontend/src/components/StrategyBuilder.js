@@ -25,7 +25,7 @@ import {
   Col,
   message
 } from 'antd';
-import { PlusOutlined, MinusCircleOutlined, QuestionCircleOutlined, SaveOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined, QuestionCircleOutlined, SaveOutlined, UploadOutlined, DownloadOutlined, PlayCircleOutlined, ThunderboltOutlined, RocketOutlined } from '@ant-design/icons';
 import strategyService from '../services/strategyService';
 import moment from 'moment';
 import './StrategyBuilder.css';
@@ -230,24 +230,16 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
           <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
         </div>
-        <Space>
-          <Button 
-            icon={<DownloadOutlined />} 
-            onClick={handleSaveStrategy}
-            title="保存策略"
-            size="small"
-          >
-            保存策略
-          </Button>
-          <Button 
-            icon={<UploadOutlined />} 
-            onClick={handleImportStrategy}
-            title="导入策略"
-            size="small"
-          >
-            导入策略
-          </Button>
-        </Space>
+        <Button 
+          type="primary"
+          icon={<PlayCircleOutlined />}
+          onClick={() => form.submit()}
+          loading={loading}
+          style={{ borderRadius: '4px' }}
+          size="middle"
+        >
+          执行策略
+        </Button>
       </div>
       
       {error && <Alert message={error} type="error" showIcon style={{ marginTop: 8, marginBottom: 8 }} />}
@@ -311,7 +303,31 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           </Col>
         </Row>
         
-        <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px' }}>条件设置</Divider>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px', flex: 1 }}>条件设置</Divider>
+          <Space>
+            <Button 
+              icon={<SaveOutlined />} 
+              onClick={handleSaveStrategy}
+              title="保存策略"
+              size="small"
+              type="default"
+              style={{ borderRadius: '4px' }}
+            >
+              保存
+            </Button>
+            <Button 
+              icon={<UploadOutlined />} 
+              onClick={handleImportStrategy}
+              title="导入策略"
+              size="small"
+              type="default"
+              style={{ borderRadius: '4px' }}
+            >
+              导入
+            </Button>
+          </Space>
+        </div>
         
         <div style={{ marginBottom: 8 }}>
           <Tooltip title="AND: 所有条件都必须满足; OR: 满足任一条件即可">
@@ -534,29 +550,16 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
         </Row>
         
         <Form.Item style={{ marginBottom: 0, marginTop: 8 }}>
-          <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-            <Button type="primary" htmlType="submit" loading={loading} size="small">
-              执行策略
-            </Button>
-            <Space>
-              <Button 
-                icon={<DownloadOutlined />} 
-                onClick={handleSaveStrategy}
-                title="保存策略"
-                size="small"
-              >
-                保存策略
-              </Button>
-              <Button 
-                icon={<UploadOutlined />} 
-                onClick={handleImportStrategy}
-                title="导入策略"
-                size="small"
-              >
-                导入策略
-              </Button>
-            </Space>
-          </Space>
+          <Button 
+            type="primary" 
+            htmlType="submit" 
+            loading={loading} 
+            size="middle"
+            icon={<ThunderboltOutlined />}
+            style={{ borderRadius: '4px', width: '100%' }}
+          >
+            执行策略
+          </Button>
         </Form.Item>
       </Form>
     </Card>

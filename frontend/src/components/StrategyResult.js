@@ -151,9 +151,12 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <Title level={4}>{result.strategy_name} 策略结果</Title>
         <Button 
+          type="primary"
           icon={<DownloadOutlined />} 
           onClick={handleExportResult}
           title="导出结果"
+          style={{ borderRadius: '4px' }}
+          ghost
         >
           导出结果
         </Button>
