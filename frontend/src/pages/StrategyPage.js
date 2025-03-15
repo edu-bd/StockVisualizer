@@ -70,14 +70,14 @@ const StrategyPage = () => {
           size="small"
         >
           <TabPane tab="股票策略" key="stock">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'nowrap' }}>
-              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'nowrap', overflow: 'hidden' }}>
+              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0, minWidth: '300px' }}>
                 <StrategyBuilder 
                   onExecute={(strategy) => handleExecuteStrategy(strategy, 'stock')} 
                   targetType="stock" 
                 />
               </div>
-              <div style={{ width: '100%', flexGrow: 1 }}>
+              <div style={{ width: '100%', flexGrow: 1, minWidth: '300px', overflow: 'auto' }}>
                 <StrategyResult 
                   result={stockResult} 
                   targetType="stock" 
@@ -88,14 +88,14 @@ const StrategyPage = () => {
           </TabPane>
           
           <TabPane tab="指数策略" key="index">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'nowrap' }}>
-              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'nowrap', overflow: 'hidden' }}>
+              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0, minWidth: '300px' }}>
                 <StrategyBuilder 
                   onExecute={(strategy) => handleExecuteStrategy(strategy, 'index')} 
                   targetType="index" 
                 />
               </div>
-              <div style={{ width: '100%', flexGrow: 1 }}>
+              <div style={{ width: '100%', flexGrow: 1, minWidth: '300px', overflow: 'auto' }}>
                 <StrategyResult 
                   result={indexResult} 
                   targetType="index" 

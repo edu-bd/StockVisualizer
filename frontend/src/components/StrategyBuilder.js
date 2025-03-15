@@ -230,7 +230,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
           <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Button 
             icon={<SaveOutlined />} 
             onClick={handleSaveStrategy}
