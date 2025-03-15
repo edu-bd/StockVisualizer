@@ -42,11 +42,11 @@ def execute_stock_strategy(db: Session, strategy: StrategyModel) -> Dict[str, An
     # 添加市场筛选条件
     if strategy.market and strategy.market != 'all':
         if strategy.market == 'sh':
-            where_clauses.append("(s.symbol LIKE '60%' OR s.symbol LIKE '68%')")
+            where_clauses.append("s.symbol LIKE 'sh%'")
         elif strategy.market == 'sz':
-            where_clauses.append("(s.symbol LIKE '00%' OR s.symbol LIKE '30%')")
+            where_clauses.append("s.symbol LIKE 'sz%'")
         elif strategy.market == 'bj':
-            where_clauses.append("(s.symbol LIKE '43%' OR s.symbol LIKE '83%' OR s.symbol LIKE '87%')")
+            where_clauses.append("s.symbol LIKE 'bj%'")
     
     for i, condition in enumerate(strategy.conditions):
         condition_clause, condition_params = _build_condition_clause(condition, i)
@@ -141,11 +141,11 @@ def execute_index_strategy(db: Session, strategy: StrategyModel) -> Dict[str, An
     # 添加市场筛选条件
     if strategy.market and strategy.market != 'all':
         if strategy.market == 'sh':
-            where_clauses.append("(i.symbol LIKE '00%' OR i.symbol LIKE '88%')")
+            where_clauses.append("i.symbol LIKE 'sh%'")
         elif strategy.market == 'sz':
-            where_clauses.append("(i.symbol LIKE '39%')")
+            where_clauses.append("i.symbol LIKE 'sz%'")
         elif strategy.market == 'bj':
-            where_clauses.append("(i.symbol LIKE '89%')")
+            where_clauses.append("i.symbol LIKE 'bj%'")
     
     for i, condition in enumerate(strategy.conditions):
         condition_clause, condition_params = _build_condition_clause(condition, i, is_index=True)

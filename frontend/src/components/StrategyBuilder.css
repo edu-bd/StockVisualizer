@@ -2,6 +2,8 @@
 
 .strategy-builder {
   margin-bottom: 16px;
+  height: calc(100vh - 220px);
+  overflow-y: auto;
 }
 
 .condition-logic-selector {
@@ -11,13 +13,13 @@
 .conditions-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .condition-card {
-  width: 280px;
-  margin-bottom: 12px;
+  width: 100%;
+  margin-bottom: 8px;
   border-radius: 6px;
   transition: all 0.3s;
 }
@@ -28,4 +30,30 @@
 
 .add-condition-button {
   margin-top: 6px;
+}
+
+/* 紧凑型表单样式 */
+.strategy-builder .ant-form-item {
+  margin-bottom: 8px;
+}
+
+.strategy-builder .ant-card-head {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.strategy-builder .ant-card-head-title {
+  padding: 8px 0;
+}
+
+.strategy-builder .ant-card-body {
+  padding: 12px;
+}
+
+.strategy-builder .ant-divider {
+  margin: 8px 0;
+}
+
+.strategy-builder .ant-form-item-label > label {
+  height: 24px;
 }

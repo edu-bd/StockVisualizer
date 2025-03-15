@@ -70,32 +70,38 @@ const StrategyPage = () => {
           size="small"
         >
           <TabPane tab="股票策略" key="stock">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <StrategyBuilder 
-                onExecute={(strategy) => handleExecuteStrategy(strategy, 'stock')} 
-                targetType="stock" 
-              />
-              
-              <StrategyResult 
-                result={stockResult} 
-                targetType="stock" 
-                loading={loading && activeTab === 'stock'} 
-              />
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              <div style={{ width: '40%', flexShrink: 0 }}>
+                <StrategyBuilder 
+                  onExecute={(strategy) => handleExecuteStrategy(strategy, 'stock')} 
+                  targetType="stock" 
+                />
+              </div>
+              <div style={{ width: '60%', flexGrow: 1 }}>
+                <StrategyResult 
+                  result={stockResult} 
+                  targetType="stock" 
+                  loading={loading && activeTab === 'stock'} 
+                />
+              </div>
             </div>
           </TabPane>
           
           <TabPane tab="指数策略" key="index">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <StrategyBuilder 
-                onExecute={(strategy) => handleExecuteStrategy(strategy, 'index')} 
-                targetType="index" 
-              />
-              
-              <StrategyResult 
-                result={indexResult} 
-                targetType="index" 
-                loading={loading && activeTab === 'index'} 
-              />
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              <div style={{ width: '40%', flexShrink: 0 }}>
+                <StrategyBuilder 
+                  onExecute={(strategy) => handleExecuteStrategy(strategy, 'index')} 
+                  targetType="index" 
+                />
+              </div>
+              <div style={{ width: '60%', flexGrow: 1 }}>
+                <StrategyResult 
+                  result={indexResult} 
+                  targetType="index" 
+                  loading={loading && activeTab === 'index'} 
+                />
+              </div>
             </div>
           </TabPane>
         </Tabs>

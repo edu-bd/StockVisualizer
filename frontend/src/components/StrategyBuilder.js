@@ -225,10 +225,10 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
 
   return (
     <Card className="strategy-builder" size="small">
-      <Title level={4} style={{ marginBottom: '8px' }}>构建选股策略</Title>
-      <Text type="secondary">创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
+      <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
+      <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
       
-      {error && <Alert message={error} type="error" showIcon style={{ marginTop: 12 }} />}
+      {error && <Alert message={error} type="error" showIcon style={{ marginTop: 8, marginBottom: 8 }} />}
       
       <Form
         form={form}
@@ -238,6 +238,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           logic: 'AND',
           sort_order: 'desc',
           market: 'all',
+          date_range: [moment('2024-01-01'), moment('2025-01-01')],
           conditions: [{
             indicator_type: 'price',
             indicator: 'close',
@@ -246,24 +247,19 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
             time_frame: 'daily'
           }]
         }}
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 8 }}
+        size="small"
       >
-        <Form.Item
-          name="name"
-          label="策略名称"
-          rules={[{ required: true, message: '请输入策略名称' }]}
-        >
-          <Input placeholder="输入策略名称" />
-        </Form.Item>
-        
-        <Form.Item
-          name="description"
-          label="策略描述"
-        >
-          <Input.TextArea placeholder="输入策略描述（可选）" rows={2} />
-        </Form.Item>
-        
-        <Row gutter={16}>
+        <Row gutter={8}>
+          <Col span={12}>
+            <Form.Item
+              name="name"
+              label="策略名称"
+              rules={[{ required: true, message: '请输入策略名称' }]}
+            >
+              <Input placeholder="输入策略名称" />
+            </Form.Item>
+          </Col>
           <Col span={12}>
             <Form.Item
               name="market"
@@ -272,30 +268,38 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
               <Select placeholder="选择市场" options={marketOptions} />
             </Form.Item>
           </Col>
+        </Row>
+        
+        <Row gutter={8}>
+          <Col span={12}>
+            <Form.Item
+              name="description"
+              label="策略描述"
+            >
+              <Input.TextArea placeholder="输入策略描述（可选）" rows={1} />
+            </Form.Item>
+          </Col>
           <Col span={12}>
             <Form.Item
               name="date_range"
               label="日期范围"
             >
-              <DatePicker.RangePicker style={{ width: '100%' }} />
+              <DatePicker.RangePicker style={{ width: '100%' }} size="small" />
             </Form.Item>
           </Col>
         </Row>
         
-        <Divider orientation="left" style={{ margin: '10px 0' }}>条件设置</Divider>
+        <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px' }}>条件设置</Divider>
         
-        <div style={{ marginBottom: 12 }}>
+        <div style={{ marginBottom: 8 }}>
           <Tooltip title="AND: 所有条件都必须满足; OR: 满足任一条件即可">
-            <span>条件逻辑关系 <QuestionCircleOutlined /></span>
+            <span style={{ fontSize: '12px' }}>条件逻辑关系 <QuestionCircleOutlined /></span>
           </Tooltip>
-        </div>
-        
-        <div className="condition-logic-selector">
           <Form.Item
             name="logic"
             noStyle
           >
-            <Radio.Group>
+            <Radio.Group size="small" style={{ marginLeft: 8 }}>
               <Radio.Button value="AND">AND (且)</Radio.Button>
               <Radio.Button value="OR">OR (或)</Radio.Button>
             </Radio.Group>
@@ -318,111 +322,130 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
                     }
                     className="condition-card"
                   >
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'indicator_type']}
-                      label="指标类型"
-                      rules={[{ required: true, message: '请选择指标类型' }]}
-                    >
-                      <Select 
-                        placeholder="选择指标类型"
-                        onChange={() => {
-                          // 当指标类型改变时，清空已选择的指标
-                          form.setFieldsValue({
-                            conditions: form.getFieldValue('conditions').map((condition, index) => {
-                              if (index === name) {
-                                return { ...condition, indicator: undefined };
-                              }
-                              return condition;
-                            })
-                          });
-                        }}
-                      >
-                        {indicatorTypes.map(type => (
-                          <Option key={type.value} value={type.value}>{type.label}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'indicator']}
-                      label="指标"
-                      rules={[{ required: true, message: '请选择指标' }]}
-                    >
-                      <Select 
-                        placeholder="选择指标"
-                        disabled={!form.getFieldValue(['conditions', name, 'indicator_type'])}
-                      >
-                        {getFilteredIndicators(form.getFieldValue(['conditions', name, 'indicator_type']))
-                          .map(indicator => (
-                            <Option key={indicator.value} value={indicator.value}>{indicator.label}</Option>
-                          ))}
-                      </Select>
-                    </Form.Item>
-                    
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'time_frame']}
-                      label="时间周期"
-                      rules={[{ required: true, message: '请选择时间周期' }]}
-                    >
-                      <Select placeholder="选择时间周期">
-                        {timeFrames.map(frame => (
-                          <Option key={frame.value} value={frame.value}>{frame.label}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'operator']}
-                      label="比较运算符"
-                      rules={[{ required: true, message: '请选择比较运算符' }]}
-                    >
-                      <Select placeholder="选择比较运算符">
-                        {comparisonOperators.map(op => (
-                          <Option key={op.value} value={op.value}>{op.label}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    
-                    {form.getFieldValue(['conditions', name, 'operator']) === 'between' ? (
-                      <Space>
+                    <Row gutter={8}>
+                      <Col span={12}>
                         <Form.Item
                           {...restField}
-                          name={[name, 'value_low']}
-                          label="最小值"
-                          rules={[{ required: true, message: '请输入最小值' }]}
+                          name={[name, 'indicator_type']}
+                          label="指标类型"
+                          rules={[{ required: true, message: '请选择指标类型' }]}
                         >
-                          <InputNumber placeholder="最小值" style={{ width: '100%' }} />
+                          <Select 
+                            placeholder="选择指标类型"
+                            onChange={() => {
+                              // 当指标类型改变时，清空已选择的指标
+                              form.setFieldsValue({
+                                conditions: form.getFieldValue('conditions').map((condition, index) => {
+                                  if (index === name) {
+                                    return { ...condition, indicator: undefined };
+                                  }
+                                  return condition;
+                                })
+                              });
+                            }}
+                            size="small"
+                          >
+                            {indicatorTypes.map(type => (
+                              <Option key={type.value} value={type.value}>{type.label}</Option>
+                            ))}
+                          </Select>
                         </Form.Item>
-                        
+                      </Col>
+                      <Col span={12}>
                         <Form.Item
                           {...restField}
-                          name={[name, 'value_high']}
-                          label="最大值"
-                          rules={[{ required: true, message: '请输入最大值' }]}
+                          name={[name, 'indicator']}
+                          label="指标"
+                          rules={[{ required: true, message: '请选择指标' }]}
                         >
-                          <InputNumber placeholder="最大值" style={{ width: '100%' }} />
+                          <Select 
+                            placeholder="选择指标"
+                            disabled={!form.getFieldValue(['conditions', name, 'indicator_type'])}
+                            size="small"
+                          >
+                            {getFilteredIndicators(form.getFieldValue(['conditions', name, 'indicator_type']))
+                              .map(indicator => (
+                                <Option key={indicator.value} value={indicator.value}>{indicator.label}</Option>
+                              ))}
+                          </Select>
                         </Form.Item>
-                      </Space>
-                    ) : (
-                      <Form.Item
-                        {...restField}
-                        name={[name, 'value']}
-                        label="比较值"
-                        rules={[{ required: true, message: '请输入比较值' }]}
-                      >
-                        <InputNumber placeholder="输入比较值" style={{ width: '100%' }} />
-                      </Form.Item>
-                    )}
+                      </Col>
+                    </Row>
+                    
+                    <Row gutter={8}>
+                      <Col span={8}>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'time_frame']}
+                          label="时间周期"
+                          rules={[{ required: true, message: '请选择时间周期' }]}
+                        >
+                          <Select placeholder="选择时间周期" size="small">
+                            {timeFrames.map(frame => (
+                              <Option key={frame.value} value={frame.value}>{frame.label}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col span={8}>
+                        <Form.Item
+                          {...restField}
+                          name={[name, 'operator']}
+                          label="比较运算符"
+                          rules={[{ required: true, message: '请选择比较运算符' }]}
+                        >
+                          <Select placeholder="选择比较运算符" size="small">
+                            {comparisonOperators.map(op => (
+                              <Option key={op.value} value={op.value}>{op.label}</Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      
+                      {form.getFieldValue(['conditions', name, 'operator']) === 'between' ? (
+                        <Col span={8}>
+                          <Row gutter={4}>
+                            <Col span={12}>
+                              <Form.Item
+                                {...restField}
+                                name={[name, 'value_low']}
+                                label="最小值"
+                                rules={[{ required: true, message: '请输入最小值' }]}
+                              >
+                                <InputNumber placeholder="最小值" style={{ width: '100%' }} size="small" />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                {...restField}
+                                name={[name, 'value_high']}
+                                label="最大值"
+                                rules={[{ required: true, message: '请输入最大值' }]}
+                              >
+                                <InputNumber placeholder="最大值" style={{ width: '100%' }} size="small" />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        </Col>
+                      ) : (
+                        <Col span={8}>
+                          <Form.Item
+                            {...restField}
+                            name={[name, 'value']}
+                            label="比较值"
+                            rules={[{ required: true, message: '请输入比较值' }]}
+                          >
+                            <InputNumber placeholder="输入比较值" style={{ width: '100%' }} size="small" />
+                          </Form.Item>
+                        </Col>
+                      )}
+                    </Row>
                     
                     <Form.Item
                       {...restField}
                       name={[name, 'days']}
                       label={
-                        <span>
+                        <span style={{ fontSize: '12px' }}>
                           持续天数
                           <Tooltip title="指标需要连续满足条件的天数，留空表示不需要连续满足">
                             <QuestionCircleOutlined style={{ marginLeft: 4 }} />
@@ -430,7 +453,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
                         </span>
                       }
                     >
-                      <InputNumber placeholder="持续天数（可选）" min={1} style={{ width: '100%' }} />
+                      <InputNumber placeholder="持续天数（可选）" min={1} style={{ width: '100%' }} size="small" />
                     </Form.Item>
                   </Card>
                 ))}
@@ -443,6 +466,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
                   block 
                   icon={<PlusOutlined />}
                   className="add-condition-button"
+                  size="small"
                 >
                   添加条件
                 </Button>
@@ -451,39 +475,45 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
           )}
         </Form.List>
         
-        <Divider orientation="left">结果设置</Divider>
+        <Divider orientation="left" style={{ margin: '8px 0', fontSize: '14px' }}>结果设置</Divider>
         
-        <Form.Item
-          name="sort_by"
-          label="排序指标"
-        >
-          <Select placeholder="选择排序指标（可选）" allowClear>
-            {indicators.map(indicator => (
-              <Option key={indicator.value} value={indicator.value}>{indicator.label}</Option>
-            ))}
-          </Select>
-        </Form.Item>
+        <Row gutter={8}>
+          <Col span={8}>
+            <Form.Item
+              name="sort_by"
+              label="排序指标"
+            >
+              <Select placeholder="选择排序指标（可选）" allowClear size="small">
+                {indicators.map(indicator => (
+                  <Option key={indicator.value} value={indicator.value}>{indicator.label}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="sort_order"
+              label="排序顺序"
+            >
+              <Radio.Group size="small">
+                <Radio.Button value="desc">降序</Radio.Button>
+                <Radio.Button value="asc">升序</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="max_stocks"
+              label="最大结果数量"
+            >
+              <InputNumber placeholder="最大结果数量（可选）" min={1} style={{ width: '100%' }} size="small" />
+            </Form.Item>
+          </Col>
+        </Row>
         
-        <Form.Item
-          name="sort_order"
-          label="排序顺序"
-        >
-          <Radio.Group>
-            <Radio.Button value="desc">降序</Radio.Button>
-            <Radio.Button value="asc">升序</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        
-        <Form.Item
-          name="max_stocks"
-          label="最大结果数量"
-        >
-          <InputNumber placeholder="最大结果数量（可选）" min={1} style={{ width: '100%' }} />
-        </Form.Item>
-        
-        <Form.Item>
+        <Form.Item style={{ marginBottom: 0, marginTop: 8 }}>
           <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-            <Button type="primary" htmlType="submit" loading={loading}>
+            <Button type="primary" htmlType="submit" loading={loading} size="small">
               执行策略
             </Button>
             <Space>
@@ -491,6 +521,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
                 icon={<DownloadOutlined />} 
                 onClick={handleSaveStrategy}
                 title="保存策略"
+                size="small"
               >
                 保存策略
               </Button>
@@ -498,6 +529,7 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
                 icon={<UploadOutlined />} 
                 onClick={handleImportStrategy}
                 title="导入策略"
+                size="small"
               >
                 导入策略
               </Button>

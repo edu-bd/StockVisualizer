@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import { Table, Card, Typography, Tag, Tooltip, Statistic, Row, Col, Select, Button } from 'antd';
-import { CheckCircleOutlined, ClockCircleOutlined, DownloadOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, ClockCircleOutlined, DownloadOutlined, FilterOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const { Title, Text } = Typography;
@@ -22,8 +22,34 @@ const { Title, Text } = Typography;
  */
 const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
   const [pageSize, setPageSize] = useState(10);
+  const [marketFilter, setMarketFilter] = useState('all');
+  
   // 如果没有结果，则不显示
   if (!result) return null;
+
+  // 市场选项
+  const marketOptions = [
+    { value: 'all', label: '全部市场' },
+    { value: 'sh', label: '上海' },
+    { value: 'sz', label: '深圳' },
+    { value: 'bj', label: '北京' }
+  ];
+
+  // 根据市场筛选数据
+  const filteredItems = marketFilter === 'all' 
+    ? result.items 
+    : result.items.filter(item => {
+        const symbol = item.symbol;
+        // 直接检查股票代码前缀
+        if (marketFilter === 'sh') {
+          return symbol.startsWith('sh');
+        } else if (marketFilter === 'sz') {
+          return symbol.startsWith('sz');
+        } else if (marketFilter === 'bj') {
+          return symbol.startsWith('bj');
+        }
+        return true;
+      });
 
   // 定义表格列
   const columns = [
@@ -132,14 +158,14 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
       </div>
       
       <Row gutter={16} style={{ marginBottom: 16 }}>
-        <Col span={8}>
+        <Col span={6}>
           <Statistic 
             title="匹配数量" 
-            value={result.total} 
+            value={filteredItems.length} 
             suffix={targetType === 'stock' ? '只股票' : '个指数'} 
           />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <Statistic 
             title="执行时间" 
             value={result.execution_time.toFixed(3)} 
@@ -147,9 +173,21 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
             prefix={<ClockCircleOutlined />} 
           />
         </Col>
-        <Col span={8}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ marginRight: 8 }}>每页显示：</span>
+        <Col span={6}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ marginBottom: 4 }}>市场筛选：</span>
+            <Select
+              value={marketFilter}
+              onChange={setMarketFilter}
+              options={marketOptions}
+              style={{ width: '100%' }}
+              suffixIcon={<FilterOutlined />}
+            />
+          </div>
+        </Col>
+        <Col span={6}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ marginBottom: 4 }}>每页显示：</span>
             <Select
               value={pageSize}
               onChange={setPageSize}
@@ -159,7 +197,7 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
                 { value: 50, label: '50条/页' },
                 { value: 100, label: '100条/页' },
               ]}
-              style={{ width: 120 }}
+              style={{ width: '100%' }}
             />
           </div>
         </Col>
@@ -167,7 +205,7 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
       
       <Table 
         columns={columns} 
-        dataSource={result.items.map((item, index) => ({ ...item, key: index }))} 
+        dataSource={filteredItems.map((item, index) => ({ ...item, key: index }))} 
         pagination={{ 
           pageSize: pageSize,
           showSizeChanger: false
