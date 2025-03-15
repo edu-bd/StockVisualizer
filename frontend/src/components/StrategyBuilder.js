@@ -225,8 +225,30 @@ const StrategyBuilder = ({ onExecute, targetType = 'stock' }) => {
 
   return (
     <Card className="strategy-builder" size="small">
-      <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
-      <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div>
+          <Title level={4} style={{ marginBottom: '4px' }}>构建选股策略</Title>
+          <Text type="secondary" style={{ fontSize: '12px' }}>创建自定义选股策略，筛选符合条件的{targetType === 'stock' ? '股票' : '指数'}</Text>
+        </div>
+        <Space>
+          <Button 
+            icon={<DownloadOutlined />} 
+            onClick={handleSaveStrategy}
+            title="保存策略"
+            size="small"
+          >
+            保存策略
+          </Button>
+          <Button 
+            icon={<UploadOutlined />} 
+            onClick={handleImportStrategy}
+            title="导入策略"
+            size="small"
+          >
+            导入策略
+          </Button>
+        </Space>
+      </div>
       
       {error && <Alert message={error} type="error" showIcon style={{ marginTop: 8, marginBottom: 8 }} />}
       

@@ -51,7 +51,7 @@ const StrategyPage = () => {
 
   return (
     <Layout className="strategy-page">
-      <Content style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+      <Content style={{ padding: '16px', width: '100%' }}>
         <Typography>
           <Title level={2} style={{ marginBottom: '8px' }}>选股策略</Title>
           <Paragraph style={{ marginBottom: '12px' }}>
@@ -70,14 +70,14 @@ const StrategyPage = () => {
           size="small"
         >
           <TabPane tab="股票策略" key="stock">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
-              <div style={{ width: '40%', flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0 }}>
                 <StrategyBuilder 
                   onExecute={(strategy) => handleExecuteStrategy(strategy, 'stock')} 
                   targetType="stock" 
                 />
               </div>
-              <div style={{ width: '60%', flexGrow: 1 }}>
+              <div style={{ width: '100%', flexGrow: 1 }}>
                 <StrategyResult 
                   result={stockResult} 
                   targetType="stock" 
@@ -88,14 +88,14 @@ const StrategyPage = () => {
           </TabPane>
           
           <TabPane tab="指数策略" key="index">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
-              <div style={{ width: '40%', flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ width: '100%', maxWidth: '500px', flexShrink: 0 }}>
                 <StrategyBuilder 
                   onExecute={(strategy) => handleExecuteStrategy(strategy, 'index')} 
                   targetType="index" 
                 />
               </div>
-              <div style={{ width: '60%', flexGrow: 1 }}>
+              <div style={{ width: '100%', flexGrow: 1 }}>
                 <StrategyResult 
                   result={indexResult} 
                   targetType="index" 

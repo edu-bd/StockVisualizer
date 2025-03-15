@@ -7,6 +7,27 @@
 
 .app-content {
   padding: 24px;
+  padding-top: 84px; /* 增加顶部padding，避免内容被导航栏遮挡 */
   background-color: #f0f2f5;
   min-height: calc(100vh - 64px - 70px); /* 减去header和footer的高度 */
+}
+
+/* 导航菜单样式美化 */
+.app-header {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.app-header .logo {
+  float: left;
+  margin-right: 20px;
+}
+
+.app-header .logo a {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
 }

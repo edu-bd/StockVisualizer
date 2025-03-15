@@ -112,27 +112,29 @@ const StrategyResult = ({ result, targetType = 'stock', loading = false }) => {
     }
   );
 
-  // 导出结果为JSON文件
+  // 导出结果为TXT文件（简化的股票代码，用逗号分隔）
   const handleExportResult = () => {
     try {
-      // 创建要导出的数据对象
-      const exportData = {
-        strategy_name: result.strategy_name,
-        execution_time: result.execution_time,
-        total: result.total,
-        target_type: targetType,
-        items: result.items,
-        export_date: new Date().toISOString()
-      };
+      // 提取股票代码并去除市场前缀
+      const stockCodes = filteredItems.map(item => {
+        // 去除市场前缀（如sh、sz、bj等）
+        const symbol = item.symbol;
+        // 使用正则表达式匹配非数字前缀
+        const match = symbol.match(/[^0-9]*(\d+)/);
+        return match ? match[1] : symbol;
+      });
+      
+      // 用逗号连接股票代码
+      const content = stockCodes.join(',');
       
       // 创建Blob对象
-      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const blob = new Blob([content], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       
       // 创建下载链接并点击
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${result.strategy_name || 'strategy_result'}_${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `${result.strategy_name || 'strategy_result'}_${new Date().toISOString().slice(0, 10)}.txt`;
       document.body.appendChild(a);
       a.click();
       
