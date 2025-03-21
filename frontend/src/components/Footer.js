@@ -46,7 +46,7 @@ const Footer = () => {
       <div className="footer-content">
         <p>股票数据可视化系统 &copy; {currentYear}</p>
         <p>
-          <a onClick={showQRCode}><GithubOutlined /> 关于我们</a> | 
+          <a onClick={showQRCode}><GithubOutlined /> 关于我</a> |
           <a onClick={showReadme}><QuestionCircleOutlined /> 使用帮助</a> | 
           <a href="https://akshare.akfamily.xyz/data_tips.html" target="_blank" rel="noopener noreferrer"><DatabaseOutlined /> 数据来源</a>
         </p>
