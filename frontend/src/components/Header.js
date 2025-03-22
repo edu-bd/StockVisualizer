@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { HomeOutlined, LineChartOutlined, FundOutlined, FilterOutlined } from '@ant-design/icons';
+import { HomeOutlined, LineChartOutlined, FundOutlined, FilterOutlined, BarChartOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 
 const { Header: AntHeader } = Layout;
@@ -58,6 +58,11 @@ const Header = () => {
             key: '4',
             icon: <FilterOutlined />,
             label: <Link to="/strategy">选股策略</Link>,
+          },
+          {
+            key: '5',
+            icon: <BarChartOutlined />,
+            label: <Link to="/granger">格兰杰因果</Link>,
           },
         ]}
       />
