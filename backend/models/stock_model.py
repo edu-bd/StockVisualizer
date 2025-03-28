@@ -7,17 +7,17 @@ Date: 2025-03-12
 """
 
 from sqlalchemy import Column, String, Float, Date, PrimaryKeyConstraint
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import date
 from typing import Optional, List
 
-from backend.database.connection import Base
+from database.connection import Base
 
 
 class StockDailyData(Base):
     """
     股票日线数据数据库模型。
-    对应数据库中的stock_daily_data表。
+    对应数据库中的daily_stock表。
 
     Attributes:
         symbol (str): 股票代码
@@ -31,7 +31,7 @@ class StockDailyData(Base):
         outstanding_share (float): 流通股本
         turnover (float): 换手率
     """
-    __tablename__ = "stock_daily_data"
+    __tablename__ = "daily_stock"
 
     symbol = Column(String, nullable=False)
     date = Column(Date, nullable=False)
@@ -52,7 +52,6 @@ class StockDailyData(Base):
         return f"<StockDailyData(symbol={self.symbol}, date={self.date})>"
 
 
-# Pydantic模型，用于API响应
 class StockData(BaseModel):
     """
     股票数据API模型。
@@ -70,6 +69,8 @@ class StockData(BaseModel):
         outstanding_share (Optional[float]): 流通股本
         turnover (Optional[float]): 换手率
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     date: date
     open: float
@@ -80,10 +81,6 @@ class StockData(BaseModel):
     amount: Optional[float] = None
     outstanding_share: Optional[float] = None
     turnover: Optional[float] = None
-
-    class Config:
-        """Pydantic配置类"""
-        orm_mode = True
 
 
 class StockInfo(BaseModel):
@@ -103,6 +100,8 @@ class StockInfo(BaseModel):
         outstanding_share (Optional[float]): 流通股本
         turnover (Optional[float]): 换手率
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     latest_date: date
     open: float
@@ -126,6 +125,8 @@ class StockList(BaseModel):
         page (int): 当前页码
         page_size (int): 每页数量
     """
+    model_config = ConfigDict(from_attributes=True)
+
     items: List[dict]
     total: int
     page: int
@@ -141,5 +142,7 @@ class StockKlineData(BaseModel):
         symbol (str): 股票代码
         data (List[dict]): K线数据列表
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     data: List[dict]

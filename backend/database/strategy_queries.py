@@ -12,7 +12,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any, Optional
 
-from backend.models.strategy_model import StrategyModel, ConditionModel, IndicatorType, ComparisonOperator, TimeFrame
+from models.strategy_model import StrategyModel, ConditionModel, IndicatorType, ComparisonOperator, TimeFrame
 
 
 def execute_stock_strategy(db: Session, strategy: StrategyModel) -> Dict[str, Any]:

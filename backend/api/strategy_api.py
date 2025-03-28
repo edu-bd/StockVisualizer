@@ -10,9 +10,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from sqlalchemy.orm import Session
 from typing import Optional, List
 
-from backend.database.connection import get_db
-from backend.models.strategy_model import StrategyModel, StrategyResult
-from backend.services.strategy_service import StrategyService
+from database.connection import get_db
+from models.strategy_model import StrategyModel, StrategyResult
+from services.strategy_service import StrategyService
 
 router = APIRouter(prefix="/strategies", tags=["strategies"])
 strategy_service = StrategyService()

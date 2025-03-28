@@ -10,9 +10,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from backend.api.router import api_router
-from backend.config.settings import settings
-from backend.database.connection import engine, Base
+from api.router import api_router
+from config.settings import settings
+from database.connection import engine, Base
+from models import stock_model, index_model, strategy_model, stock_basic_info_model
 
 # 配置日志
 logging.basicConfig(
@@ -31,7 +32,7 @@ app = FastAPI(
 # 配置CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origins=["*"],  # 直接在中间件中设置允许所有来源
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,7 +51,8 @@ async def startup_event():
     logger.info("Starting up the application...")
     # 创建数据库表（如果不存在）
     # 注意：在生产环境中，应该使用数据库迁移工具
-    # Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    logger.info("Database tables created successfully")
 
 
 @app.on_event("shutdown")

@@ -6,7 +6,7 @@ Authors: hovi.hyw & AI
 Date: 2025-03-12
 """
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import List, Dict, Any, Optional, Union
 from enum import Enum
 
@@ -62,6 +62,8 @@ class ConditionModel(BaseModel):
         time_frame (TimeFrame): 时间周期
         days (Optional[int]): 持续天数，用于某些需要持续满足条件的场景
     """
+    model_config = ConfigDict(from_attributes=True)
+
     indicator: str
     indicator_type: IndicatorType
     operator: ComparisonOperator
@@ -69,18 +71,19 @@ class ConditionModel(BaseModel):
     time_frame: TimeFrame = TimeFrame.DAILY
     days: Optional[int] = None
 
-    @validator('value')
-    def validate_value(cls, v, values):
+    @field_validator('value')
+    @classmethod
+    def validate_value(cls, v, info):
         """
         验证比较值。
-        根据比较运算符验证比较值的格式。
+        根据运算符类型验证值的格式是否正确。
         """
-        operator = values.get('operator')
+        operator = info.data.get('operator')
         if operator == ComparisonOperator.BETWEEN:
             if not isinstance(v, list) or len(v) != 2:
-                raise ValueError("区间比较需要提供两个值的列表")
+                raise ValueError('BETWEEN operator requires a list with exactly 2 values')
             if v[0] >= v[1]:
-                raise ValueError("区间的起始值必须小于结束值")
+                raise ValueError('First value must be less than second value for BETWEEN operator')
         return v
 
 
@@ -100,6 +103,8 @@ class StrategyModel(BaseModel):
         sort_by (Optional[str]): 排序指标
         sort_order (Optional[str]): 排序顺序，支持 'asc' 和 'desc'
     """
+    model_config = ConfigDict(from_attributes=True)
+
     name: str = Field(..., min_length=1, max_length=100)
     description: Optional[str] = None
     market: Optional[str] = Field("all", pattern="^(all|sh|sz|bj)$")
@@ -122,6 +127,8 @@ class StrategyResultItem(BaseModel):
         latest_price (float): 最新价格
         match_details (Dict[str, Any]): 匹配详情，包含每个条件的匹配结果
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     name: Optional[str] = None
     latest_price: float
@@ -139,6 +146,8 @@ class StrategyResult(BaseModel):
         items (List[StrategyResultItem]): 选股结果列表
         execution_time (float): 执行时间（秒）
     """
+    model_config = ConfigDict(from_attributes=True)
+
     strategy_name: str
     total: int
     items: List[StrategyResultItem]

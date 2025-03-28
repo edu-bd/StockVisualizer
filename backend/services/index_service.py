@@ -9,7 +9,7 @@ Date: 2025-03-12
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 
-from backend.database.queries import get_index_list, get_index_kline_data, get_index_info
+from database.queries import get_index_list, get_index_kline_data, get_index_info
 
 
 class IndexService:

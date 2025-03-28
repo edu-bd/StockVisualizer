@@ -41,12 +41,36 @@ class Settings(BaseSettings):
         "DATABASE_URL",
         "postgresql://postgres:password@localhost:5432/stockdb"
     )
+    
+    # 如果在本地开发环境中，确保使用本地PostgreSQL
+    if os.getenv("ENVIRONMENT") != "production":
+        DATABASE_URL = "postgresql://postgres:password@localhost:5432/stockdb"
+    
+    # 检查是否在Docker环境中运行
+    # 如果在Docker环境中，将使用环境变量中的DATABASE_URL
+    # 否则使用默认的localhost连接
 
     # 日志设置
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
 
-    # 跨域设置
-    BACKEND_CORS_ORIGINS: list = ["*"]
+    # 跨域设置 - 开发环境允许所有来源
+    BACKEND_CORS_ORIGINS: list = ["*"]  # 在开发环境中允许所有来源（生产环境中应使用具体的域名列表）
+    
+    # 如果上面的配置不生效，可以尝试以下具体的域名列表
+    # BACKEND_CORS_ORIGINS: list = [
+    #     "http://localhost:3000",
+    #     "http://localhost:8080",
+    #     "http://localhost:5173",
+    #     "http://127.0.0.1:3000",
+    #     "http://127.0.0.1:8080",
+    #     "http://127.0.0.1:5173",
+    #     "http://stock_visualizer_frontend:3000",
+    #     "http://stock_visualizer_frontend:80",
+    #     "http://deployment-stock_visualizer_frontend-1:3000",
+    #     "http://deployment-stock_visualizer_frontend-1:80",
+    #     "http://localhost",  # 允许从任何本地端口访问
+    #     "http://127.0.0.1",  # 允许从IP地址访问
+    # ]
 
     # 分页设置
     DEFAULT_PAGE_SIZE: int = 20

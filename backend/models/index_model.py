@@ -7,17 +7,17 @@ Date: 2025-03-12
 """
 
 from sqlalchemy import Column, String, Float, Date, BigInteger, Numeric, PrimaryKeyConstraint
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import date
 from typing import Optional, List
 
-from backend.database.connection import Base
+from database.connection import Base
 
 
 class IndexDailyData(Base):
     """
     指数日线数据数据库模型。
-    对应数据库中的index_daily_data表。
+    对应数据库中的daily_index表。
 
     Attributes:
         symbol (str): 指数代码
@@ -34,7 +34,7 @@ class IndexDailyData(Base):
         change_amount (float): 涨跌额
         turnover_rate (float): 换手率
     """
-    __tablename__ = "index_daily_data"
+    __tablename__ = "daily_index"
 
     symbol = Column(String, nullable=False)
     date = Column(Date, nullable=False)
@@ -58,7 +58,6 @@ class IndexDailyData(Base):
         return f"<IndexDailyData(symbol={self.symbol}, date={self.date})>"
 
 
-# Pydantic模型，用于API响应
 class IndexData(BaseModel):
     """
     指数数据API模型。
@@ -79,6 +78,8 @@ class IndexData(BaseModel):
         change_amount (Optional[float]): 涨跌额
         turnover_rate (Optional[float]): 换手率
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     name: Optional[str] = None
     date: date
@@ -92,10 +93,6 @@ class IndexData(BaseModel):
     change_rate: Optional[float] = None
     change_amount: Optional[float] = None
     turnover_rate: Optional[float] = None
-
-    class Config:
-        """Pydantic配置类"""
-        orm_mode = True
 
 
 class IndexInfo(BaseModel):
@@ -118,6 +115,8 @@ class IndexInfo(BaseModel):
         change_amount (Optional[float]): 涨跌额
         turnover_rate (Optional[float]): 换手率
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     name: Optional[str] = None
     latest_date: date
@@ -144,6 +143,8 @@ class IndexList(BaseModel):
         page (int): 当前页码
         page_size (int): 每页数量
     """
+    model_config = ConfigDict(from_attributes=True)
+
     items: List[dict]
     total: int
     page: int
@@ -160,6 +161,8 @@ class IndexKlineData(BaseModel):
         name (Optional[str]): 指数名称
         data (List[dict]): K线数据列表
     """
+    model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     name: Optional[str] = None
     data: List[dict]

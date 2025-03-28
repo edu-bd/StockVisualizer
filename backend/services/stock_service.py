@@ -9,7 +9,8 @@ Date: 2025-03-12
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 
-from backend.database.queries import get_stock_list, get_stock_kline_data, get_stock_info
+from database.queries import get_stock_list, get_stock_kline_data, get_stock_info
+from services.stock_basic_info_service import StockBasicInfoService
 
 
 class StockService:
@@ -90,6 +91,15 @@ class StockService:
         
         if not stock_info:
             raise ValueError(f"Stock with symbol {symbol} not found")
+            
+        # 从股票基本信息表中获取股票名称
+        basic_info_service = StockBasicInfoService()
+        basic_info = basic_info_service.get_stock_basic_info(db, symbol)
+        
+        # 如果找到了基本信息，添加股票名称
+        if basic_info and 'name' in basic_info:
+            stock_info['name'] = basic_info['name']
+            
         return stock_info
 
     def get_stock_kline(self, db: Session, symbol: str, start_date: date | None = None, end_date: date | None = None):

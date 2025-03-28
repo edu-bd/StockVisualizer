@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  stock_visualizer_backend:
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://si:jojo@pgdb:5432/stock_db
+    networks:
+      - stock_network
+
+  stock_visualizer_frontend:
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - stock_network
+    depends_on:
+      - stock_visualizer_backend
+
+networks:
+  stock_network:
+    external: true
+    name: stock_network

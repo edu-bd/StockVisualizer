@@ -1,0 +1,25 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+# 复制项目文件
+COPY frontend/ /app/
+
+# 复制环境变量文件
+COPY frontend/.env /app/
+
+# 设置环境变量
+# 使用相对路径，这样前端可以通过浏览器的当前域名访问后端API
+ENV REACT_APP_API_BASE_URL=/api
+
+# 安装依赖
+RUN npm install
+
+# 构建应用
+RUN npm run build
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动应用
+CMD ["npm", "start"]

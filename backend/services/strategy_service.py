@@ -9,8 +9,8 @@ Date: 2025-03-12
 from sqlalchemy.orm import Session
 from typing import Dict, Any, List, Optional
 
-from backend.models.strategy_model import StrategyModel, StrategyResult
-from backend.database.strategy_queries import execute_stock_strategy, execute_index_strategy
+from models.strategy_model import StrategyModel, StrategyResult
+from database.strategy_queries import execute_stock_strategy, execute_index_strategy
 
 
 class StrategyService:
