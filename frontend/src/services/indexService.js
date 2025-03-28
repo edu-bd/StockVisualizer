@@ -25,7 +25,7 @@ export const getIndexList = async (params = {}) => {
   };
 
   try {
-    const response = await api.get('/indices', { params: queryParams });
+    const response = await api.get('/api/indices', { params: queryParams });
     return response;
   } catch (error) {
     console.error('获取指数列表失败:', error);
@@ -40,7 +40,7 @@ export const getIndexList = async (params = {}) => {
  */
 export const getIndexInfo = async (symbol) => {
   try {
-    const response = await api.get(`/indices/${symbol}`);
+    const response = await api.get(`/api/indices/${symbol}`);
     return response;
   } catch (error) {
     console.error(`获取指数${symbol}详情失败:`, error);
@@ -58,7 +58,7 @@ export const getIndexInfo = async (symbol) => {
  */
 export const getIndexKline = async (symbol, params = {}) => {
   try {
-    const response = await api.get(`/indices/${symbol}/kline`, { params });
+    const response = await api.get(`/api/indices/${symbol}/kline`, { params });
     return response;
   } catch (error) {
     console.error(`获取指数${symbol}K线数据失败:`, error);

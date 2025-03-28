@@ -13,7 +13,7 @@ import logging
 from api.router import api_router
 from config.settings import settings
 from database.connection import engine, Base
-from models import stock_model, index_model, strategy_model, stock_basic_info_model
+from models import stock_model, index_model, stock_basic_info_model
 
 # 配置日志
 logging.basicConfig(

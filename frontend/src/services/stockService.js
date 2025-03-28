@@ -25,7 +25,7 @@ export const getStockList = async (params = {}) => {
   };
 
   try {
-    const response = await api.get('/stocks', { params: queryParams });
+    const response = await api.get('/api/stocks', { params: queryParams });
     return response;
   } catch (error) {
     console.error('获取股票列表失败:', error);
@@ -40,7 +40,7 @@ export const getStockList = async (params = {}) => {
  */
 export const getStockInfo = async (symbol) => {
   try {
-    const response = await api.get(`/stocks/${symbol}`);
+    const response = await api.get(`/api/stocks/${symbol}`);
     return response;
   } catch (error) {
     console.error(`获取股票${symbol}详情失败:`, error);
@@ -58,7 +58,7 @@ export const getStockInfo = async (symbol) => {
  */
 export const getStockKline = async (symbol, params = {}) => {
   try {
-    const response = await api.get(`/stocks/${symbol}/kline`, { params });
+    const response = await api.get(`/api/stocks/${symbol}/kline`, { params });
     return response;
   } catch (error) {
     console.error(`获取股票${symbol}K线数据失败:`, error);
